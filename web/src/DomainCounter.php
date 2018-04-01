@@ -67,8 +67,8 @@ class DomainCounter
     }
 
     /**
-     * @param array $domains
-     * @return array
+     * @param   array $domains
+     * @return  array
      */
     function sort_domains( array $domains ) : array
     {
