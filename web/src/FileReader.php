@@ -58,7 +58,8 @@ class FileReader
                 throw new DieException( "Can't read file $file_path" );
             }
 
-            return $file;
+            # Clean file from empty strings
+            return array_filter( $file );
         } catch (Exception $e) {
             throw new DieException("Can't read file $file_path");
         }

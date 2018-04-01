@@ -172,13 +172,16 @@ class Test extends TestCase
     {
         $result = ( new DomainCounter() )->process_all_emails( [
             'email@email.com',
+            'asdads',
             'email2@mail.ru',
         ] );
 
         $this->assertArrayHasKey("email.com", $result);
         $this->assertArrayHasKey("mail.ru", $result);
+        $this->assertArrayHasKey("INVALID", $result);
         $this->assertEquals( $result[ "mail.ru" ], 1);
         $this->assertEquals( $result[ "email.com" ], 1);
+        $this->assertEquals( $result[ "INVALID" ], 1);
     }
 
     /**
