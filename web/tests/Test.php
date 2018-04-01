@@ -221,7 +221,7 @@ class Test extends TestCase
 
         reset( $result );
 
-        $this->assertTrue( key(  $result )=== 'vk.com' );
+        $this->assertTrue( key( $result )=== 'vk.com' );
     }
 
     /**
