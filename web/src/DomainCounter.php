@@ -40,8 +40,9 @@ class DomainCounter
         foreach ( $emails as $email ) {
             $domain = Email::get_domain( $email );
 
-            $this->count_domain( $domain );
+            $this->domains = $this->count_domain( $domain, $this->domains );
         }
+        $this->domains = $this->sort_domains( $this->domains );
 
         return $this->domains;
     }
@@ -50,19 +51,42 @@ class DomainCounter
      * @param   string $domain
      * @return  array
      */
-    function count_domain( string $domain ) : array
+    function count_domain( string $domain, array $domains ) : array
     {
         # Search domain in domains array
         # Add new if not found
-        if ( !in_array( $domain, array_keys( $this->domains ) ) ) {
-            $this->domains[ $domain ] = 1;
+        if ( !in_array( $domain, array_keys( $domains ) ) ) {
+            $domains[ $domain ] = 1;
         }
         # Increment counter if domain already exists
         else {
-            $this->domains[ $domain ]++;
+            $domains[ $domain ]++;
         }
 
-        return $this->domains;
+        return $domains;
+    }
+
+    /**
+     * @param array $domains
+     * @return array
+     */
+    function sort_domains( array $domains ) : array
+    {
+        # Separate invalid domains
+        if ( key_exists('INVALID', $domains ) ) {
+            $invalids = $domains[ 'INVALID' ];
+            unset( $domains[ 'INVALID' ] );
+        }
+
+        # Sorting domains array by value
+        arsort($domains );
+
+        # Add invalid item back if exist
+        if ( isset( $invalids ) ) {
+            $domains[ 'INVALID' ] = $invalids;
+        }
+
+        return $domains;
     }
 
     /**

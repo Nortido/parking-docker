@@ -4,11 +4,11 @@
  */
 namespace App\Tests;
 
+
 use App\DomainCounter;
 use App\Email;
 use App\Exceptions\DieException;
 use App\FileReader;
-use PHPUnit\Exception;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
@@ -170,7 +170,10 @@ class Test extends TestCase
      */
     function test_processing()
     {
-        $result = ( new DomainCounter() )->process_all_emails( [ 'email@email.com', 'email2@mail.ru' ] );
+        $result = ( new DomainCounter() )->process_all_emails( [
+            'email@email.com',
+            'email2@mail.ru',
+        ] );
 
         $this->assertArrayHasKey("email.com", $result);
         $this->assertArrayHasKey("mail.ru", $result);
@@ -201,6 +204,24 @@ class Test extends TestCase
         $this->expectExceptionMessage( "No emails to process" );
 
         $result = ( new DomainCounter() )->process_all_emails( [] );
+    }
+
+    /**
+     * Test sorting email domains array
+     *
+     * @throws DieException
+     */
+    function test_sorting()
+    {
+        $result = ( new DomainCounter() )->process_all_emails( [
+            'email@email.com',
+            'email@vk.com',
+            'email2@vk.com',
+        ] );
+
+        reset( $result );
+
+        $this->assertTrue( key(  $result )=== 'vk.com' );
     }
 
     /**
